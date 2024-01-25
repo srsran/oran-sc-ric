@@ -1,0 +1,24 @@
+logging:
+  logLevel: debug
+http:
+  port: 3800
+rmr:
+  port: 3801
+  maxMsgSize: 65536
+routingManager:
+  baseUrl: http://10.0.2.15:12020/ric/v1/handles/
+notificationResponseBuffer: 100
+bigRedButtonTimeoutSec: 5
+maxRnibConnectionAttempts: 3
+rnibRetryIntervalMs: 10
+keepAliveResponseTimeoutMs: 4500
+keepAliveDelayMs: 1500
+e2tInstanceDeletionTimeoutMs: 15000
+e2ResetTimeOutSec: 10
+globalRicId:
+  ricId: "AACCE"
+  mcc: "001"
+  mnc: "01"
+rnibWriter:
+  stateChangeMessageChannel: RAN_CONNECTION_STATUS_CHANGE
+  ranManipulationMessageChannel: RAN_MANIPULATION

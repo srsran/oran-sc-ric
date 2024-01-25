@@ -1,0 +1,268 @@
+diff --git a/ricxappframe/subsclient/models/action_definition.py b/ricxappframe/subsclient/models/action_definition.py
+index b13f316..284d3b7 100644
+--- a/ricxappframe/subsclient/models/action_definition.py
++++ b/ricxappframe/subsclient/models/action_definition.py
+@@ -70,6 +70,10 @@ class ActionDefinition(object):
+             for key, value in self.items():
+                 result[key] = value
+ 
++        for old_key,new_key in self.attribute_map.items():
++            if (old_key in result):
++                result[new_key]= result.pop(old_key)
++
+         return result
+ 
+     def to_str(self):
+diff --git a/ricxappframe/subsclient/models/action_to_be_setup.py b/ricxappframe/subsclient/models/action_to_be_setup.py
+index ba96c49..4afd586 100644
+--- a/ricxappframe/subsclient/models/action_to_be_setup.py
++++ b/ricxappframe/subsclient/models/action_to_be_setup.py
+@@ -191,6 +191,10 @@ class ActionToBeSetup(object):
+             for key, value in self.items():
+                 result[key] = value
+ 
++        for old_key,new_key in self.attribute_map.items():
++            if (old_key in result):
++                result[new_key]= result.pop(old_key)
++
+         return result
+ 
+     def to_str(self):
+diff --git a/ricxappframe/subsclient/models/actions_to_be_setup.py b/ricxappframe/subsclient/models/actions_to_be_setup.py
+index 8116915..f8ac56a 100644
+--- a/ricxappframe/subsclient/models/actions_to_be_setup.py
++++ b/ricxappframe/subsclient/models/actions_to_be_setup.py
+@@ -70,6 +70,10 @@ class ActionsToBeSetup(object):
+             for key, value in self.items():
+                 result[key] = value
+ 
++        for old_key,new_key in self.attribute_map.items():
++            if (old_key in result):
++                result[new_key]= result.pop(old_key)
++
+         return result
+ 
+     def to_str(self):
+diff --git a/ricxappframe/subsclient/models/config_metadata.py b/ricxappframe/subsclient/models/config_metadata.py
+index df0925f..3d45323 100644
+--- a/ricxappframe/subsclient/models/config_metadata.py
++++ b/ricxappframe/subsclient/models/config_metadata.py
+@@ -137,6 +137,10 @@ class ConfigMetadata(object):
+             for key, value in self.items():
+                 result[key] = value
+ 
++        for old_key,new_key in self.attribute_map.items():
++            if (old_key in result):
++                result[new_key]= result.pop(old_key)
++
+         return result
+ 
+     def to_str(self):
+diff --git a/ricxappframe/subsclient/models/event_trigger_definition.py b/ricxappframe/subsclient/models/event_trigger_definition.py
+index 5f71a65..37690ba 100644
+--- a/ricxappframe/subsclient/models/event_trigger_definition.py
++++ b/ricxappframe/subsclient/models/event_trigger_definition.py
+@@ -70,6 +70,10 @@ class EventTriggerDefinition(object):
+             for key, value in self.items():
+                 result[key] = value
+ 
++        for old_key,new_key in self.attribute_map.items():
++            if (old_key in result):
++                result[new_key]= result.pop(old_key)
++
+         return result
+ 
+     def to_str(self):
+diff --git a/ricxappframe/subsclient/models/subscription_data.py b/ricxappframe/subsclient/models/subscription_data.py
+index 3fdb085..d3e41a2 100644
+--- a/ricxappframe/subsclient/models/subscription_data.py
++++ b/ricxappframe/subsclient/models/subscription_data.py
+@@ -176,6 +176,10 @@ class SubscriptionData(object):
+             for key, value in self.items():
+                 result[key] = value
+ 
++        for old_key,new_key in self.attribute_map.items():
++            if (old_key in result):
++                result[new_key]= result.pop(old_key)
++
+         return result
+ 
+     def to_str(self):
+diff --git a/ricxappframe/subsclient/models/subscription_detail.py b/ricxappframe/subsclient/models/subscription_detail.py
+index 2657cdb..bc7ef41 100644
+--- a/ricxappframe/subsclient/models/subscription_detail.py
++++ b/ricxappframe/subsclient/models/subscription_detail.py
+@@ -159,6 +159,10 @@ class SubscriptionDetail(object):
+             for key, value in self.items():
+                 result[key] = value
+ 
++        for old_key,new_key in self.attribute_map.items():
++            if (old_key in result):
++                result[new_key]= result.pop(old_key)
++
+         return result
+ 
+     def to_str(self):
+diff --git a/ricxappframe/subsclient/models/subscription_details_list.py b/ricxappframe/subsclient/models/subscription_details_list.py
+index eb0c237..ab89c15 100644
+--- a/ricxappframe/subsclient/models/subscription_details_list.py
++++ b/ricxappframe/subsclient/models/subscription_details_list.py
+@@ -70,6 +70,10 @@ class SubscriptionDetailsList(object):
+             for key, value in self.items():
+                 result[key] = value
+ 
++        for old_key,new_key in self.attribute_map.items():
++            if (old_key in result):
++                result[new_key]= result.pop(old_key)
++
+         return result
+ 
+     def to_str(self):
+diff --git a/ricxappframe/subsclient/models/subscription_instance.py b/ricxappframe/subsclient/models/subscription_instance.py
+index df8d00f..bba3d7a 100644
+--- a/ricxappframe/subsclient/models/subscription_instance.py
++++ b/ricxappframe/subsclient/models/subscription_instance.py
+@@ -236,6 +236,10 @@ class SubscriptionInstance(object):
+             for key, value in self.items():
+                 result[key] = value
+ 
++        for old_key,new_key in self.attribute_map.items():
++            if (old_key in result):
++                result[new_key]= result.pop(old_key)
++
+         return result
+ 
+     def to_str(self):
+diff --git a/ricxappframe/subsclient/models/subscription_list.py b/ricxappframe/subsclient/models/subscription_list.py
+index f4fba1b..a0d3eac 100644
+--- a/ricxappframe/subsclient/models/subscription_list.py
++++ b/ricxappframe/subsclient/models/subscription_list.py
+@@ -70,6 +70,10 @@ class SubscriptionList(object):
+             for key, value in self.items():
+                 result[key] = value
+ 
++        for old_key,new_key in self.attribute_map.items():
++            if (old_key in result):
++                result[new_key]= result.pop(old_key)
++
+         return result
+ 
+     def to_str(self):
+diff --git a/ricxappframe/subsclient/models/subscription_params.py b/ricxappframe/subsclient/models/subscription_params.py
+index 18b89ca..7c87a63 100644
+--- a/ricxappframe/subsclient/models/subscription_params.py
++++ b/ricxappframe/subsclient/models/subscription_params.py
+@@ -240,6 +240,10 @@ class SubscriptionParams(object):
+             for key, value in self.items():
+                 result[key] = value
+ 
++        for old_key,new_key in self.attribute_map.items():
++            if (old_key in result):
++                result[new_key]= result.pop(old_key)
++
+         return result
+ 
+     def to_str(self):
+diff --git a/ricxappframe/subsclient/models/subscription_params_client_endpoint.py b/ricxappframe/subsclient/models/subscription_params_client_endpoint.py
+index 4521653..de12359 100644
+--- a/ricxappframe/subsclient/models/subscription_params_client_endpoint.py
++++ b/ricxappframe/subsclient/models/subscription_params_client_endpoint.py
+@@ -168,6 +168,10 @@ class SubscriptionParamsClientEndpoint(object):
+             for key, value in self.items():
+                 result[key] = value
+ 
++        for old_key,new_key in self.attribute_map.items():
++            if (old_key in result):
++                result[new_key]= result.pop(old_key)
++
+         return result
+ 
+     def to_str(self):
+diff --git a/ricxappframe/subsclient/models/subscription_params_e2_subscription_directives.py b/ricxappframe/subsclient/models/subscription_params_e2_subscription_directives.py
+index 74cf43c..5f5b95d 100644
+--- a/ricxappframe/subsclient/models/subscription_params_e2_subscription_directives.py
++++ b/ricxappframe/subsclient/models/subscription_params_e2_subscription_directives.py
+@@ -168,6 +168,10 @@ class SubscriptionParamsE2SubscriptionDirectives(object):
+             for key, value in self.items():
+                 result[key] = value
+ 
++        for old_key,new_key in self.attribute_map.items():
++            if (old_key in result):
++                result[new_key]= result.pop(old_key)
++
+         return result
+ 
+     def to_str(self):
+diff --git a/ricxappframe/subsclient/models/subscription_response.py b/ricxappframe/subsclient/models/subscription_response.py
+index df08c08..d27fe35 100644
+--- a/ricxappframe/subsclient/models/subscription_response.py
++++ b/ricxappframe/subsclient/models/subscription_response.py
+@@ -126,6 +126,10 @@ class SubscriptionResponse(object):
+             for key, value in self.items():
+                 result[key] = value
+ 
++        for old_key,new_key in self.attribute_map.items():
++            if (old_key in result):
++                result[new_key]= result.pop(old_key)
++
+         return result
+ 
+     def to_str(self):
+diff --git a/ricxappframe/subsclient/models/subsequent_action.py b/ricxappframe/subsclient/models/subsequent_action.py
+index 9f701f9..aa80f3d 100644
+--- a/ricxappframe/subsclient/models/subsequent_action.py
++++ b/ricxappframe/subsclient/models/subsequent_action.py
+@@ -140,6 +140,10 @@ class SubsequentAction(object):
+             for key, value in self.items():
+                 result[key] = value
+ 
++        for old_key,new_key in self.attribute_map.items():
++            if (old_key in result):
++                result[new_key]= result.pop(old_key)
++
+         return result
+ 
+     def to_str(self):
+diff --git a/ricxappframe/subsclient/models/x_app_config.py b/ricxappframe/subsclient/models/x_app_config.py
+index 77a1b94..ac41201 100644
+--- a/ricxappframe/subsclient/models/x_app_config.py
++++ b/ricxappframe/subsclient/models/x_app_config.py
+@@ -128,6 +128,10 @@ class XAppConfig(object):
+             for key, value in self.items():
+                 result[key] = value
+ 
++        for old_key,new_key in self.attribute_map.items():
++            if (old_key in result):
++                result[new_key]= result.pop(old_key)
++
+         return result
+ 
+     def to_str(self):
+diff --git a/ricxappframe/subsclient/models/xapp_config_list.py b/ricxappframe/subsclient/models/xapp_config_list.py
+index 853a11a..6762fd3 100644
+--- a/ricxappframe/subsclient/models/xapp_config_list.py
++++ b/ricxappframe/subsclient/models/xapp_config_list.py
+@@ -70,6 +70,10 @@ class XappConfigList(object):
+             for key, value in self.items():
+                 result[key] = value
+ 
++        for old_key,new_key in self.attribute_map.items():
++            if (old_key in result):
++                result[new_key]= result.pop(old_key)
++
+         return result
+ 
+     def to_str(self):
+diff --git a/ricxappframe/xapp_subscribe.py b/ricxappframe/xapp_subscribe.py
+index 0bd5b24..93e5662 100644
+--- a/ricxappframe/xapp_subscribe.py
++++ b/ricxappframe/xapp_subscribe.py
+@@ -98,7 +98,7 @@ class NewSubscriber():
+         """
+ #        if subs_params is not None and type(subs_params) is subsclient.models.subscription_params.SubscriptionParams:
+         if subs_params is not None:
+-            response = self.api.request(method="POST", url=self.uri, headers=None, body=subs_params.to_dict())
++            response = self.api.request(method="POST", url=self.uri + "/subscriptions", headers=None, body=subs_params.to_dict())
+             return response.data, response.reason, response.status
+         return None, "Input parameter is not SubscriptionParams{}", 500
+ 

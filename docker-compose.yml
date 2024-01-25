@@ -1,0 +1,182 @@
+version: '3.9'
+
+services:
+  dbaas:
+    container_name: ric_dbaas
+    hostname: dbaas
+    image: nexus3.o-ran-sc.org:10002/o-ran-sc/ric-plt-dbaas:${DBAAS_VER}
+    command: redis-server --loadmodule /usr/local/libexec/redismodule/libredismodule.so
+    networks:
+      ric_network:
+        ipv4_address: ${DBAAS_IP:-10.0.2.12}
+
+  rtmgr_sim:
+    container_name: ric_rtmgr_sim
+    hostname: rtmgr_sim
+    image: rtmgr_sim:${SC_RIC_VERSION}
+    build:
+      context: ./ric/images/rtmgr_sim
+      dockerfile: ./Dockerfile
+      args:
+        SC_RIC_VERSION: ${SC_RIC_VERSION}
+    env_file:
+      - .env
+    environment:
+      - CONTAINER_NAME=ric_${RTMGR_SIM_NAME}
+      - HOST_NAME=ric_${RTMGR_SIM_NAME}_host
+      - POD_NAME=${RTMGR_SIM_NAME}_pod
+      - SERVICE_NAME=ric_${RTMGR_SIM_NAME}_service
+      - CFGFILE=/cfg/rtmgr-config.yaml
+      - RMR_SEED_RT=/opt/config/uta-rtg.rt
+      - RMR_SRC_ID=${RTMGR_SIM_IP}
+    volumes:
+      - type: bind
+        source: ./ric/configs/rtmgr.yaml
+        target: /opt/rmsimulator/resources/configuration.yaml
+      - type: bind
+        source: ./ric/configs/routes.rtg
+        target: /opt/config/uta-rtg.rt
+    networks:
+      ric_network:
+        ipv4_address: ${RTMGR_SIM_IP:-10.0.2.15}
+
+  submgr:
+    container_name: ric_submgr
+    hostname: submgr
+    image: nexus3.o-ran-sc.org:10002/o-ran-sc/ric-plt-submgr:${SUBMGR_VER}
+    env_file:
+      - .env
+    environment:
+      - CONTAINER_NAME=ric_${SUBMGR_NAME}
+      - HOST_NAME=ric_${SUBMGR_NAME}_host
+      - POD_NAME=${SUBMGR_NAME}_pod
+      - SERVICE_NAME=ric_${SUBMGR_NAME}_service
+      - CFG_FILE=/opt/config/submgr-config.yaml
+      - RMR_SEED_RT=/opt/config/submgr-uta-rtg.rt
+      - RMR_SRC_ID=${SUBMGR_IP}
+    command: ./submgr -f $${CFG_FILE}
+    volumes:
+      - type: bind
+        source: ./ric/configs/submgr.yaml
+        target: /opt/config/submgr-config.yaml
+      - type: bind
+        source: ./ric/configs/routes.rtg
+        target: /opt/config/submgr-uta-rtg.rt
+    networks:
+      ric_network:
+        ipv4_address: ${SUBMGR_IP:-10.0.2.13}
+
+  e2term:
+    container_name: ric_e2term
+    hostname: e2term
+    image: nexus3.o-ran-sc.org:10004/o-ran-sc/ric-plt-e2:${E2TERM_VER}
+    env_file:
+      - .env
+    environment:
+      - CONTAINER_NAME=ric_${E2TERM_NAME}
+      - HOST_NAME=ric_${E2TERM_NAME}_host
+      - POD_NAME=${E2TERM_NAME}_pod
+      - SERVICE_NAME=ric_${E2TERM_NAME}_service
+      - print=1
+      - RMR_SEED_RT=/opt/e2/dockerRouter.txt
+      - RMR_SRC_ID=${E2TERM_IP}
+    command: ./e2 -p config -f config.conf
+    volumes:
+      - type: bind
+        source: ./ric/configs/e2term.conf
+        target: /opt/e2/config/config.conf
+      - type: bind
+        source: ./ric/configs/routes.rtg
+        target: /opt/e2/dockerRouter.txt
+    networks:
+      ric_network:
+        ipv4_address: ${E2TERM_IP:-10.0.2.10}
+
+  appmgr:
+    container_name: ric_appmgr
+    hostname: appmgr
+    image: nexus3.o-ran-sc.org:10002/o-ran-sc/ric-plt-appmgr:${APPMGR_VER}
+    env_file:
+      - .env
+    environment:
+      - CONTAINER_NAME=ric_${APPMGR_NAME}
+      - HOST_NAME=ric_${APPMGR_NAME}_host
+      - POD_NAME=${APPMGR_NAME}_pod
+      - SERVICE_NAME=ric_${APPMGR_NAME}_service
+      - RMR_SEED_RT=/opt/ric/config/router.txt
+      - RMR_SRC_ID=${APPMGR_IP}
+    volumes:
+      - type: bind
+        source: ./ric/configs/routes.rtg
+        target:  /opt/ric/config/router.txt
+      - type: bind
+        source: ./ric/configs/appmgr.yaml
+        target: /opt/ric/config/appmgr.yaml
+    networks:
+      ric_network:
+        ipv4_address: ${APPMGR_IP:-10.0.2.14}
+
+  e2mgr:
+    container_name: ric_e2mgr
+    hostname: e2mgr
+    image: nexus3.o-ran-sc.org:10002/o-ran-sc/ric-plt-e2mgr:${E2MGR_VER}
+    env_file:
+      - .env
+    environment:
+      - CONTAINER_NAME=ric_${E2MGR_NAME}
+      - HOST_NAME=ric_${E2MGR_NAME}_host
+      - POD_NAME=${E2MGR_NAME}_pod
+      - SERVICE_NAME=ric_${E2MGR_NAME}_service
+      - RMR_SEED_RT=/opt/E2Manager/router.txt
+      - RMR_SRC_ID=${E2MGR_IP}
+    command: ./main -port=3800 -f /opt/E2Manager/resources/configuration.yaml
+    volumes:
+      - type: bind
+        source: ./ric/configs/routes.rtg
+        target: /opt/E2Manager/router.txt
+      - type: bind
+        source: ./ric/configs/e2mgr.yaml
+        target: /opt/E2Manager/resources/configuration.yaml
+    networks:
+      ric_network:
+        ipv4_address: ${E2MGR_IP:-10.0.2.11}
+
+  python_xapp_runner:
+    container_name: python_xapp_runner
+    hostname: python_xapp_runner
+    image: python_xapp_runner:${SC_RIC_VERSION}
+    build:
+      context: ./ric/images/ric-plt-xapp-frame-py
+      dockerfile: ./Dockerfile
+    env_file:
+      - .env
+    environment:
+      - PYTHONUNBUFFERED=0
+      - PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
+      - RMR_SEED_RT=/opt/ric/config/uta-rtg.rt
+      - RMR_SRC_ID=${XAPP_PY_RUNNER_IP}
+      - RMR_RTG_SVC=4560
+    stdin_open: true
+    tty: true
+    entrypoint: [/bin/bash]
+    volumes:
+      - type: bind
+        source: ./ric/configs/routes.rtg
+        target: /opt/ric/config/uta-rtg.rt
+      - type: bind
+        source: ./xApps/python
+        target: /opt/xApps
+      # Uncomment if you want to use your local ric-plt-xapp-frame-py copy inside the container
+      #- type: bind
+      #  source: ./Path/to/your/local/ric-plt-xapp-frame-py
+      #  target: /opt/ric-plt-xapp-frame-py
+    networks:
+      ric_network:
+        ipv4_address: ${XAPP_PY_RUNNER_IP:-10.0.2.20}
+
+networks:
+  ric_network:
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.2.0/24

@@ -1,0 +1,37 @@
+Files: *
+Copyright: 2024, Software Radio Systems Limited.
+License:   See LICENSE file
+
+
+The following files are used within the project:
+
+
+Files:     e2-agents/srsRAN/gnb_zmq.yaml
+           e2-agents/srsRAN/ue_zmq.conf
+Copyright: 2021-2024, Software Radio Systems Limited.
+License:   AGPLv3
+Comment:   Files were updated/modified.
+
+
+Files:     ric/configs/appmgr.yaml
+           ric/configs/e2mgr.yaml
+           ric/configs/e2term.conf
+           ric/configs/routes.rtg
+           ric/configs/rtmgr.yaml
+           ric/configs/submgr.yaml
+Copyright: 2018-2020 AT&T Intellectual Property, 2019-2020 Nokia
+License:   Apache License, Version 2.0
+Comment:   Files were updated/modified.
+
+
+Files:     ric/images/rtmgr_sim/Dockerfile
+           ric/images/ric-plt-xapp-frame-py/Dockerfile
+Copyright: 2018-2020 AT&T Intellectual Property, 2019-2020 Nokia
+License:   Apache License, Version 2.0
+Comment:   Files were updated/modified.
+
+
+Files:     xApps/python/lib/asn1/e2sm-kpm-v4.00.asn
+           xApps/python/lib/asn1/e2sm-v5.00.asn
+Copyright: 2024 O-RAN ALLIANCE e.V.
+License:   O-RAN Adopter License Agreement

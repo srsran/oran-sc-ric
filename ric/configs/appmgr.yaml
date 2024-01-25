@@ -1,0 +1,22 @@
+"helm":
+  #"host": "192.168.0.12:31807"
+  #"repo": "http://192.168.0.6/charts"
+  #"repo-name": "helm-repo"
+  #"secrets":
+  #  "username": "admin"
+  #  "password": "ric"
+  #"helm-username-file": "./helm_repo_username"
+  #"helm-password-file": "./helm_repo_password"
+  #"retry": 1
+"xapp":
+  "namespace": "ricxapp"
+  "tarDir": "/tmp"
+  "schema": "descriptors/schema.json"
+  "config": "config/config-file.json"
+  "tmpConfig": "/tmp/config-file.json"
+"db":
+  "sessionNamespace": "XMSession"
+  "host": "10.0.2.12:6379"
+  "prot": "tcp"
+  "maxIdle": 80
+  "maxActive": 12000

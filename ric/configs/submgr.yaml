@@ -1,0 +1,29 @@
+"local":
+  "host": "10.0.2.13:8080"
+"logger":
+  "level": 1
+"rmr":
+  "protPort" : "tcp:4560"
+  "maxSize": 8192
+  "numWorkers": 1
+"rtmgr":
+  "hostAddr": "10.0.2.15"
+  "port"    : "12020"
+  "baseUrl" : "/ric/v1"
+"db":
+  "sessionNamespace": "XMSession"
+  "host": "10.0.2.12:6379"
+  "prot": "tcp"
+  "maxIdle": 80
+  "maxActive": 12000
+"controls":
+  "e2tSubReqTimeout_ms": 2000
+  "e2tSubDelReqTime_ms": 2000
+  "e2tRecvMsgTimeout_ms": 2000
+  "e2tMaxSubReqTryCount": 2
+  "e2tMaxSubDelReqTryCount": 2
+  "checkE2State": "true"
+  "readSubsFromDb": "true"
+  "dbTryCount": 200
+  "dbRetryForever": "true"
+  "checkE2IEOrder": 1
