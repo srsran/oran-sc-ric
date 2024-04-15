@@ -10,6 +10,8 @@ import ricxappframe.xapp_subscribe as subscribe
 import ricxappframe.xapp_rest as ricrest
 from ricxappframe.e2ap.asn1 import IndicationMsg
 from .e2sm_kpm_module import e2sm_types, e2sm_kpm_module
+from .e2sm_rc_module import e2sm_rc_module
+
 
 class SubscriptionWrapper(object):
     def __init__(self):
@@ -20,7 +22,7 @@ class SubscriptionWrapper(object):
         self.callback_func = None
 
 class xAppBase(object):
-    def __init__(self, config):
+    def __init__(self, config=None, rmr_flags=0x01):
         super(xAppBase, self).__init__()
         # Default Config
         self.xAPP_IP = "10.0.2.20"
@@ -35,6 +37,7 @@ class xAppBase(object):
             pass
 
         self.e2sm_kpm = e2sm_kpm_module(self)
+        self.e2sm_rc = e2sm_rc_module(self)
         # dict to store active subscriptions
         self.my_subscriptions = {}
 
@@ -43,7 +46,7 @@ class xAppBase(object):
         
         # Initialize RMR client.
         initbind = str(self.MY_RMR_PORT).encode('utf-8')
-        self.rmr_client = rmr.rmr_init(initbind, rmr.RMR_MAX_RCV_BYTES, 0x01) # flag: do not start an additional route collector thread
+        self.rmr_client = rmr.rmr_init(initbind, rmr.RMR_MAX_RCV_BYTES, rmr_flags) # flag: do not start an additional route collector thread
         while rmr.rmr_ready(self.rmr_client) == 0:
             time.sleep(1)
 
@@ -129,6 +132,17 @@ class xAppBase(object):
         for e2_event_instance_id, subscriptionObj in self.my_subscriptions.items():
             self.unsubscribe(subscriptionObj.subscription_id)
 
+    def rmr_send(self, e2_node_id, payload, mtype, retries=1):
+        sbuf = rmr.rmr_alloc_msg(self.rmr_client, len(payload), mtype=mtype)
+        rmr.set_payload_and_length(payload, sbuf)
+        rmr.generate_and_set_transaction_id(sbuf)
+        sbuf.contents.state = 0
+        sbuf.contents.mtype = mtype
+        sbuf.contents.sub_id = -1
+        rmr.rmr_set_meid(sbuf, e2_node_id.encode("utf8"))
+        #print("Pre send summary: {}".format(rmr.message_summary(sbuf)))
+        sbuf = rmr.rmr_send_msg(self.rmr_client, sbuf)
+
     def _run(self):
         while self.running:
             try:
@@ -164,6 +178,10 @@ class xAppBase(object):
                     except Exception as e:
                         print("Error during RIC indication decoding: {}".format(e))
                         pass
+                if (summary['message type'] == 12041):
+                    print("Received RIC_CONTROL_ACK")
+                if (summary['message type'] == 12042):
+                    print("Received RIC_CONTROL_FAILURE")
 
             rmr.rmr_free_msg(sbuf)
 
