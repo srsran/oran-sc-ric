@@ -50,6 +50,7 @@ pcap:
 e2:
   enable_du_e2: true                # Enable DU E2 agent (one for each DU instance)
   e2sm_kpm_enabled: true            # Enable KPM service module
+  e2sm_rc_enabled: true             # Enable KPM service module
   addr: 10.0.2.10                   # RIC IP address
   bind_addr: 10.0.2.1               # A local IP that the E2 agent binds to for traffic from the RIC. ONLY required if running the RIC on a separate machine. 
   port: 36421                       # RIC port

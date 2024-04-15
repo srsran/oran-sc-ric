@@ -32,6 +32,7 @@ Comment:   Files were updated/modified.
 
 
 Files:     xApps/python/lib/asn1/e2sm-kpm-v4.00.asn
+           xApps/python/lib/asn1/e2sm-rc-v5.00.asn
            xApps/python/lib/asn1/e2sm-v5.00.asn
 Copyright: 2024 O-RAN ALLIANCE e.V.
 License:   O-RAN Adopter License Agreement

@@ -1,6 +1,6 @@
 # ORAN SC RIC in Docker
 
-This repository provides a minimal version of the **O-RAN Software Community (SC) Near-Real-time RIC** (`i-release`). It includes configuration files that enable the building and deployment of the SC RIC as a multi-container application using a single Docker command, without the need for Kubernetes or Helm. Additionally, the repository features example monitoring xApps, which subscribe to metric measurements using the ``E2SM_KPM`` service module.
+This repository provides a minimal version of the **O-RAN Software Community (SC) Near-Real-time RIC** (`i-release`). It includes configuration files that enable the building and deploying of the SC RIC as a multi-container application using a single Docker command, without Kubernetes or Helm. Additionally, the repository features example monitoring and control xApps, which use the  ``E2SM_KPM`` and  ``E2SM_RC`` service modules, respectively.
 
 ## Repository Structure
 
@@ -50,11 +50,13 @@ Moreover, some entities communicate using REST API. For example, an xAPP sends a
 
 ## Example xApps
 
-We provide two example [xApps](xApps/python/) designed to monitor any measurement metric exposed by an `E2SM_KPM` service module within an E2 Agent.  These xApps function by sending a `RIC Subscription Request` message, which includes a `RIC Subscription Details` Information Element crafted following the `E2SM_KPM` definition. Subsequently, they receive `RIC Indication Messages` containing measurement data adhering to the `E2SM_KPM_IndicationMessage` definition.
+We provide two example [xApps](xApps/python/) designed to monitor any measurement metric exposed by an `E2SM_KPM` service module within an E2 Agent.  These xApps function by sending a `RIC Subscription Request` message, which includes a `RIC Subscription Details` Information Element crafted following the `E2SM_KPM` definition. Subsequently, they receive `RIC Indication Messages` containing measurement data adhering to the `E2SM_KPM_IndicationMessage` definition. In addition, we provide one example xApp that demonstrates the usage of the `E2SM_RC` service module.
 
 The [simple_mon_xapp](xApps/python/simple_mon_xapp.py) serves as a basic example designed to illustrate the structure of an xApp.  It exclusively utilizes `E2SM-KPM-Report-Style-1`, enabling requests for any *E2-Node-Level* metric (i.e., aggregated metrics for the entire E2 node, for example, total DL throughput in a gNB node).
 
 The [kpm_mon_xapp](xApps/python/kpm_mon_xapp.py) serves as a comprehensive E2SM-KPM monitor, facilitating all `E2SM-KPM-Report-Styles`(i.e., 1-5). Specifically, it allows requesting *E2-Node-Level* and *UE -Level* (e.g., individual UE DL throughput) metrics.
+
+The [simple_rc_xapp](xApps/python/simple_rc_xapp.py) is a basic example designed to illustrate the usage of the RIC control API. So far, only Action ID 2 from RIC Control Style 2 (i.e., Slice-level PRB Quota control) is supported.
 
 Additionally, we provide a handy [library](xApps/python/lib/) designed to streamline xApp development. This library focuses on separating reusable code, such as communication protocols and message encoding/decoding, resulting in significantly simplified xApp implementations.
 
@@ -62,6 +64,7 @@ Specifically, we provide:
 
 - [xAppBase](xApps/python/lib/xAppBase.py) class, which abstracts the intricacies of communication via the RMR platform and REST API.
 - [e2sm_kpm_module](xApps/python/lib/e2sm_kpm_module.py) class, which offers a user-friendly subscription API and manages the encoding/decoding of E2SM_KPM ASN1 messages.
+- [e2sm_rc_module](xApps/python/lib/e2sm_rc_module.py) class, which offers a user-friendly subscription API and manages the encoding/decoding of E2SM_RC ASN1 messages.
 
 All files are written in Python and serve as excellent starting points for creating new xApps.
 
@@ -142,6 +145,23 @@ root@python_xapp_runner:/opt/xApps# ./simple_mon_xapp.py --metrics=DRB.UEThpDl,D
 ```bash
 docker compose exec python_xapp_runner ./kpm_mon_xapp.py --kpm_report_style=5
 ```
+
+**Note 4:** To start an example **E2SM_RC** [simple_rc_xapp](xApps/python/simple_rc_xapp.py) xApp, which sends a RIC Control Request for the Slice Level PRB Quota change (Control Style 2, Action ID 6), please run the following command from the `oran-sc-ric` directory (use CTRL+C to exit):
+```bash
+docker compose exec python_xapp_runner ./simple_rc_xapp.py
+```
+
+The example RC xApp periodically (every 5s) adjusts the number of DL PRBs available for allocation to a UE. Its console output should be similar to:
+
+```console
+11:34:29 Send RIC Control Request to E2 node ID: gnb_001_001_00019b for UE ID: 0, PRB_min: 1, PRB_max: 5
+11:34:34 Send RIC Control Request to E2 node ID: gnb_001_001_00019b for UE ID: 0, PRB_min: 1, PRB_max: 275
+11:34:39 Send RIC Control Request to E2 node ID: gnb_001_001_00019b for UE ID: 0, PRB_min: 1, PRB_max: 5
+11:34:44 Send RIC Control Request to E2 node ID: gnb_001_001_00019b for UE ID: 0, PRB_min: 1, PRB_max: 275
+...
+```
+
+Enabling gNB console trace (with `t`) allows the monitoring of changes in the downlink (DL) user equipment (UE) data rate.
 
 
 ## xApp Development
