@@ -2,6 +2,7 @@ import sys
 import time
 import json
 import logging
+import threading
 
 import ricxappframe
 from ricxappframe.xapp_frame import rmr
@@ -27,6 +28,7 @@ class xAppBase(object):
         self.MY_HTTP_SERVER_PORT = 8091             # web server listen port
         self.MY_RMR_PORT = 4560
         self.SUB_MGR_URI = "http://10.0.2.13:8088/ric/v1"
+        self.xapp_thread = None
 
         if config is not None:
             # TODO: read config
@@ -64,7 +66,9 @@ class xAppBase(object):
     @classmethod
     def start_function(cls, fun):
         def wrapper(self, *args, **kwargs):
-            fun(self, *args, **kwargs)
+            self.running = True
+            self.xapp_thread = threading.Thread(target=fun, args=(self, *args), kwargs=kwargs)
+            self.xapp_thread.start()
             self._run()
         return wrapper
 
@@ -126,7 +130,6 @@ class xAppBase(object):
             self.unsubscribe(subscriptionObj.subscription_id)
 
     def _run(self):
-        self.running = True
         while self.running:
             try:
                 sbuf = rmr.rmr_torcv_msg(self.rmr_client, None, 100)
@@ -169,6 +172,8 @@ class xAppBase(object):
         self.httpServer.stop()
         rmr.rmr_close(self.rmr_client)
         self.running = False
+        if (self.xapp_thread is not None):
+            self.xapp_thread.join()
         sys.exit(0)
 
     def signal_handler(self, sig, frame):
