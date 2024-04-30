@@ -51,20 +51,20 @@ class e2sm_rc_module(object):
         ue_id = ('gNB-DU-UEID', {'gNB-CU-UE-F1AP-ID': ue_id})
         control_header = self.e2sm_rc_compiler.pack_ric_control_header_f1(style_type=2, control_action_id=6, ue_id_tuple=ue_id)
 
-        control_msg_dict = {'ric-controlMessage-formats': ('controlMessage-Format1', 
+        control_msg_dict = {'ric-controlMessage-formats': ('controlMessage-Format1',
                                 {'ranP-List': [
                                     {'ranParameter-ID': 1, 'ranParameter-valueType': ('ranP-Choice-List', {'ranParameter-List': {'list-of-ranParameter': [{'sequence-of-ranParameters': [
                                         {'ranParameter-ID': 3, 'ranParameter-valueType': ('ranP-Choice-Structure', {'ranParameter-Structure': {'sequence-of-ranParameters': [
-                                            {'ranParameter-ID': 5, 'ranParameter-valueType': ('ranP-Choice-List', {'ranParameter-List': {'list-of-ranParameter': [{'sequence-of-ranParameters': [
-                                                {'ranParameter-ID': 7, 'ranParameter-valueType': ('ranP-Choice-ElementFalse', {'ranParameter-value': ('valueOctS', PLMN)})}, 
-                                                {'ranParameter-ID': 8, 'ranParameter-valueType': ('ranP-Choice-Structure', {'ranParameter-Structure': 
+                                            {'ranParameter-ID': 4, 'ranParameter-valueType': ('ranP-Choice-List', {'ranParameter-List': {'list-of-ranParameter': [{'sequence-of-ranParameters': [
+                                                {'ranParameter-ID': 6, 'ranParameter-valueType': ('ranP-Choice-ElementFalse', {'ranParameter-value': ('valueOctS', PLMN)})},
+                                                {'ranParameter-ID': 7, 'ranParameter-valueType': ('ranP-Choice-Structure', {'ranParameter-Structure':
                                                     {'sequence-of-ranParameters': [
-                                                        {'ranParameter-ID': 9, 'ranParameter-valueType': ('ranP-Choice-ElementFalse', {'ranParameter-value': ('valueOctS', sst)})}, 
-                                                        {'ranParameter-ID': 10, 'ranParameter-valueType': ('ranP-Choice-ElementFalse', {'ranParameter-value': ('valueOctS', sd)})}]
-                                                    }})}]}]}})}]}})}, 
-                                                    {'ranParameter-ID': 11, 'ranParameter-valueType': ('ranP-Choice-ElementFalse', {'ranParameter-value': ('valueInt', min_prb_policy_ratio)})}, 
-                                                    {'ranParameter-ID': 12, 'ranParameter-valueType': ('ranP-Choice-ElementFalse', {'ranParameter-value': ('valueInt', max_prb_policy_ratio)})}, 
-                                                    {'ranParameter-ID': 13, 'ranParameter-valueType': ('ranP-Choice-ElementFalse', {'ranParameter-value': ('valueInt', dedicated_prb_policy_ratio)})}]}]}})}]})}
+                                                        {'ranParameter-ID': 8, 'ranParameter-valueType': ('ranP-Choice-ElementFalse', {'ranParameter-value': ('valueOctS', sst)})},
+                                                        {'ranParameter-ID': 9, 'ranParameter-valueType': ('ranP-Choice-ElementFalse', {'ranParameter-value': ('valueOctS', sd)})}]
+                                                    }})}]}]}})}]}})},
+                                                    {'ranParameter-ID': 10, 'ranParameter-valueType': ('ranP-Choice-ElementFalse', {'ranParameter-value': ('valueInt', min_prb_policy_ratio)})},
+                                                    {'ranParameter-ID': 11, 'ranParameter-valueType': ('ranP-Choice-ElementFalse', {'ranParameter-value': ('valueInt', max_prb_policy_ratio)})},
+                                                    {'ranParameter-ID': 12, 'ranParameter-valueType': ('ranP-Choice-ElementFalse', {'ranParameter-value': ('valueInt', dedicated_prb_policy_ratio)})}]}]}})}]})}
 
         control_msg = self.e2sm_rc_compiler.pack_ric_control_msg(control_msg_dict)
         payload = self._build_ric_control_request(control_header, control_msg, ack_request)
