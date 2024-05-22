@@ -20,14 +20,14 @@ class MyXapp(xAppBase):
             max_prb_ratio = 5
             current_time = datetime.datetime.now()
             print("{} Send RIC Control Request to E2 node ID: {} for UE ID: {}, PRB_min: {}, PRB_max: {}".format(current_time.strftime("%H:%M:%S"), e2_node_id, ue_id, min_prb_ratio, max_prb_ratio))
-            self.e2sm_rc.control_slice_level_prb_quota(e2_node_id, ue_id, min_prb_ratio=1, max_prb_ratio=5, dedicated_prb_ratio=275, ack_request=1)
+            self.e2sm_rc.control_slice_level_prb_quota(e2_node_id, ue_id, min_prb_ratio=1, max_prb_ratio=5, dedicated_prb_ratio=100, ack_request=1)
             time.sleep(5)
 
             min_prb_ratio = 1
-            max_prb_ratio = 275
+            max_prb_ratio = 50
             current_time = datetime.datetime.now()
             print("{} Send RIC Control Request to E2 node ID: {} for UE ID: {}, PRB_min: {}, PRB_max: {}".format(current_time.strftime("%H:%M:%S"), e2_node_id, ue_id, min_prb_ratio, max_prb_ratio))
-            self.e2sm_rc.control_slice_level_prb_quota(e2_node_id, ue_id, min_prb_ratio=1, max_prb_ratio=50, dedicated_prb_ratio=275, ack_request=1)
+            self.e2sm_rc.control_slice_level_prb_quota(e2_node_id, ue_id, min_prb_ratio=1, max_prb_ratio=max_prb_ratio, dedicated_prb_ratio=100, ack_request=1)
             time.sleep(5)
 
 
