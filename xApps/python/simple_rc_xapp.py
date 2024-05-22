@@ -8,7 +8,7 @@ from lib.xAppBase import xAppBase
 
 class MyXapp(xAppBase):
     def __init__(self, config):
-        super(MyXapp, self).__init__(config, rmr_flags=0x00)
+        super(MyXapp, self).__init__(config)
         pass
 
     # Mark the function as xApp start function using xAppBase.start_function decorator.

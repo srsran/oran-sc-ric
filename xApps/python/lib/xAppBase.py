@@ -22,7 +22,7 @@ class SubscriptionWrapper(object):
         self.callback_func = None
 
 class xAppBase(object):
-    def __init__(self, config=None, rmr_flags=0x01):
+    def __init__(self, config=None, rmr_flags=0x00):
         super(xAppBase, self).__init__()
         # Default Config
         self.xAPP_IP = "10.0.2.20"
