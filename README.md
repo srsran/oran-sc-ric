@@ -58,6 +58,8 @@ The [kpm_mon_xapp](xApps/python/kpm_mon_xapp.py) serves as a comprehensive E2SM-
 
 The [simple_rc_xapp](xApps/python/simple_rc_xapp.py) is a basic example designed to illustrate the usage of the RIC control API. So far, only Action ID 2 from RIC Control Style 2 (i.e., Slice-level PRB Quota control) is supported.
 
+The [simple_xapp](xApps/python/simple_xapp.py) demonstrates how to use both E2SM-KPM monitoring and E2SM-RC control modules together.
+
 Additionally, we provide a handy [library](xApps/python/lib/) designed to streamline xApp development. This library focuses on separating reusable code, such as communication protocols and message encoding/decoding, resulting in significantly simplified xApp implementations.
 
 Specifically, we provide:
