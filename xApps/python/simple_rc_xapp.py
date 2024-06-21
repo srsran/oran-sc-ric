@@ -7,8 +7,8 @@ import signal
 from lib.xAppBase import xAppBase
 
 class MyXapp(xAppBase):
-    def __init__(self, config):
-        super(MyXapp, self).__init__(config)
+    def __init__(self, config, http_server_port, rmr_port):
+        super(MyXapp, self).__init__(config, http_server_port, rmr_port)
         pass
 
     # Mark the function as xApp start function using xAppBase.start_function decorator.
@@ -34,6 +34,8 @@ class MyXapp(xAppBase):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='My example xApp')
     parser.add_argument("--config", type=str, default='', help="xApp config file path")
+    parser.add_argument("--http_server_port", type=int, default=8090, help="HTTP server listen port")
+    parser.add_argument("--rmr_port", type=int, default=4560, help="RMR port")
     parser.add_argument("--e2_node_id", type=str, default='gnb_001_001_00019b', help="E2 Node ID")
     parser.add_argument("--ran_func_id", type=int, default=3, help="E2SM RC RAN function ID")
     parser.add_argument("--ue_id", type=int, default=0, help="UE ID")
@@ -46,7 +48,7 @@ if __name__ == '__main__':
     ue_id = args.ue_id
 
     # Create MyXapp.
-    myXapp = MyXapp(config)
+    myXapp = MyXapp(config, args.http_server_port, args.rmr_port)
     myXapp.e2sm_rc.set_ran_func_id(ran_func_id)
 
     # Connect exit signals.

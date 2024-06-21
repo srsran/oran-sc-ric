@@ -46,7 +46,7 @@ Moreover, some entities communicate using REST API. For example, an xAPP sends a
 
 **Note 1:**  We use the Routing Manager Simulator (`rtmgr_sim`), as we pass a static routing table to all RIC entities (i.e., `ric/configs/routes.rtg`. The real Routing Manager (`rtmgr`) creates routes dynamically upon request from entities, however, it seems that the `rtmgr` requires Kubernetes and Helm to run. More investigation is needed to start it as a simple docker service without K8s and Helm.
 
-**Note 2:** Currently, due to the usage of the static routing tables, we can support only one xApp. Specifically, there is only a single route for message type `12050` (i.e., `RIC_INDICATION`). Therefore, all `RIC_INDICATION` messages from E2 termination entity messages will be sent to a single endpoint (i.e., xApp). An alternative way is to add multiple endpoints to this route entry and filter the `RIC_INDICATION` messages by `Subscription ID` internally in the xApp.
+**Note 2:** Currently, due to the usage of the static routing tables, we support multiple xApps in the following way. We add multiple endpoints in the routing entry for message type `12050` (i.e., `RIC_INDICATION`). Therefore, all `RIC_INDICATION` messages from E2 termination entity messages are sent to multiple endpoints (i.e., xApps), and then the indication messages are filtered by `Subscription ID` internally in each xApp.
 
 ## Example xApps
 

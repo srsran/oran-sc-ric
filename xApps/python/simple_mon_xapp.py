@@ -6,8 +6,8 @@ from lib.xAppBase import xAppBase
 
 
 class MyXapp(xAppBase):
-    def __init__(self, config):
-        super(MyXapp, self).__init__(config)
+    def __init__(self, config, http_server_port, rmr_port):
+        super(MyXapp, self).__init__(config, http_server_port, rmr_port)
 
     def my_subscription_callback(self, e2_agent_id, subscription_id, indication_hdr, indication_msg):
         print("\nRIC Indication Received from {} for Subscription ID: {}".format(e2_agent_id, subscription_id))
@@ -38,6 +38,8 @@ class MyXapp(xAppBase):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='My example xApp')
     parser.add_argument("--config", type=str, default='', help="xApp config file path")
+    parser.add_argument("--http_server_port", type=int, default=8091, help="HTTP server listen port")
+    parser.add_argument("--rmr_port", type=int, default=4561, help="RMR port")
     parser.add_argument("--e2_node_id", type=str, default='gnb_001_001_00019b', help="E2 Node ID")
     parser.add_argument("--ran_func_id", type=int, default=2, help="RAN function ID")
     parser.add_argument("--metrics", type=str, default='DRB.UEThpDl', help="Metrics name as comma-separated string")
@@ -49,7 +51,7 @@ if __name__ == '__main__':
     metrics = args.metrics.split(",")
 
     # Create MyXapp.
-    myXapp = MyXapp(config)
+    myXapp = MyXapp(config, args.http_server_port, args.rmr_port)
     myXapp.e2sm_kpm.set_ran_func_id(ran_func_id)
 
     # Connect exit signals.
