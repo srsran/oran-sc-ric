@@ -8,8 +8,8 @@ from lib.xAppBase import xAppBase
 
 
 class MyXapp(xAppBase):
-    def __init__(self):
-        super(MyXapp, self).__init__()
+    def __init__(self, http_server_port, rmr_port):
+        super(MyXapp, self).__init__(http_server_port, rmr_port)
         self.ue_dl_tx_data = {}
         self.min_prb_ratio = 1
         self.max_prb_ratio1 = 10
@@ -82,6 +82,8 @@ class MyXapp(xAppBase):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='My example xApp')
+    parser.add_argument("--http_server_port", type=int, default=8090, help="HTTP server listen port")
+    parser.add_argument("--rmr_port", type=int, default=4560, help="RMR port")
     parser.add_argument("--e2_node_id", type=str, default='gnb_001_001_00019b', help="E2 Node ID")
     parser.add_argument("--ran_func_id", type=int, default=2, help="RAN function ID")
     parser.add_argument("--kpm_report_style", type=int, default=4, help="KPM Report Style ID")
@@ -96,7 +98,7 @@ if __name__ == '__main__':
     metrics = args.metrics.split(",")
 
     # Create MyXapp.
-    myXapp = MyXapp()
+    myXapp = MyXapp(args.http_server_port, args.rmr_port)
     myXapp.e2sm_kpm.set_ran_func_id(ran_func_id)
 
     # Connect exit signals.
