@@ -155,7 +155,7 @@ services:
       - PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
       - RMR_SEED_RT=/opt/ric/config/uta-rtg.rt
       - RMR_SRC_ID=${XAPP_PY_RUNNER_IP}
-      - RMR_RTG_SVC=4560
+      - RMR_RTG_SVC # leave empty, so RMR works correctly with RT Manager Simulator
     stdin_open: true
     tty: true
     entrypoint: [/bin/bash]
