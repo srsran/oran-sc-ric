@@ -9,7 +9,7 @@ from lib.xAppBase import xAppBase
 
 class MyXapp(xAppBase):
     def __init__(self, http_server_port, rmr_port):
-        super(MyXapp, self).__init__(http_server_port, rmr_port)
+        super(MyXapp, self).__init__('', http_server_port, rmr_port)
         self.ue_dl_tx_data = {}
         self.min_prb_ratio = 1
         self.max_prb_ratio1 = 10
