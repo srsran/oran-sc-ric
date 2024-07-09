@@ -44,6 +44,8 @@ services:
     container_name: ric_submgr
     hostname: submgr
     image: nexus3.o-ran-sc.org:10002/o-ran-sc/ric-plt-submgr:${SUBMGR_VER}
+    depends_on:
+      - dbaas
     env_file:
       - .env
     environment:
