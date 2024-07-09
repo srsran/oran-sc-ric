@@ -71,7 +71,7 @@ services:
   e2term:
     container_name: ric_e2term
     hostname: e2term
-    image: nexus3.o-ran-sc.org:10004/o-ran-sc/ric-plt-e2:${E2TERM_VER}
+    image: nexus3.o-ran-sc.org:10002/o-ran-sc/ric-plt-e2:${E2TERM_VER}
     env_file:
       - .env
     environment:
