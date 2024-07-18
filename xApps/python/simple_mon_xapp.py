@@ -40,7 +40,7 @@ if __name__ == '__main__':
     parser.add_argument("--config", type=str, default='', help="xApp config file path")
     parser.add_argument("--http_server_port", type=int, default=8091, help="HTTP server listen port")
     parser.add_argument("--rmr_port", type=int, default=4561, help="RMR port")
-    parser.add_argument("--e2_node_id", type=str, default='gnb_001_001_00019b', help="E2 Node ID")
+    parser.add_argument("--e2_node_id", type=str, default='gnbd_001_001_00019b_0', help="E2 Node ID")
     parser.add_argument("--ran_func_id", type=int, default=2, help="RAN function ID")
     parser.add_argument("--metrics", type=str, default='DRB.UEThpDl', help="Metrics name as comma-separated string")
 
