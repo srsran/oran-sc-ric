@@ -226,3 +226,24 @@ If you want to monitor only E2AP packets then set the Wireshark filter to `e2ap`
 
 **Note:**  You need at least Wireshark version 4.0.7 to display content of E2AP packets correctly. It should be the default version available for installation in Ubuntu 23.04. However, it is recommended to use higher versions (e.g., Wireshark version 4.1.0 (v4.1.0rc0-3390-g4f4a54e6d3f9)) that have to be built from the [source code](https://github.com/wireshark/wireshark).
 
+
+#### Run RIC on a separate host PC
+
+To run multi-container RIC app on a separate host PC, please uncomment the following lines in the ``e2term`` section of the ``docker-compose.yml``:
+```yaml
+  e2term:
+    ...
+    #Uncomment ports to use the RIC from outside the docker network.
+    ports:
+      - "36421:36421/sctp"
+```
+
+Then in the gnb config file please use the following IPs:
+
+```yaml
+e2:
+  ...
+  addr: x.x.x.x        -> IP address of the host PC runing RIC docker container
+  bind_addr: y.y.y.y   -> IP address of the gnb host PC
+  ...
+```

@@ -72,6 +72,9 @@ services:
     container_name: ric_e2term
     hostname: e2term
     image: nexus3.o-ran-sc.org:10002/o-ran-sc/ric-plt-e2:${E2TERM_VER}
+    #Uncomment ports to use the RIC from outside the docker network.
+    #ports:
+    #  - "36421:36421/sctp"
     env_file:
       - .env
     environment:
