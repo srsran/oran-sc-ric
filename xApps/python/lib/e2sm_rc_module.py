@@ -53,18 +53,36 @@ class e2sm_rc_module(object):
 
         control_msg_dict = {'ric-controlMessage-formats': ('controlMessage-Format1',
                                 {'ranP-List': [
+                                    # RRM Policy Ratio List, LIST
                                     {'ranParameter-ID': 1, 'ranParameter-valueType': ('ranP-Choice-List', {'ranParameter-List': {'list-of-ranParameter': [{'sequence-of-ranParameters': [
-                                        {'ranParameter-ID': 3, 'ranParameter-valueType': ('ranP-Choice-Structure', {'ranParameter-Structure': {'sequence-of-ranParameters': [
-                                            {'ranParameter-ID': 4, 'ranParameter-valueType': ('ranP-Choice-List', {'ranParameter-List': {'list-of-ranParameter': [{'sequence-of-ranParameters': [
-                                                {'ranParameter-ID': 6, 'ranParameter-valueType': ('ranP-Choice-ElementFalse', {'ranParameter-value': ('valueOctS', PLMN)})},
-                                                {'ranParameter-ID': 7, 'ranParameter-valueType': ('ranP-Choice-Structure', {'ranParameter-Structure':
-                                                    {'sequence-of-ranParameters': [
-                                                        {'ranParameter-ID': 8, 'ranParameter-valueType': ('ranP-Choice-ElementFalse', {'ranParameter-value': ('valueOctS', sst)})},
-                                                        {'ranParameter-ID': 9, 'ranParameter-valueType': ('ranP-Choice-ElementFalse', {'ranParameter-value': ('valueOctS', sd)})}]
-                                                    }})}]}]}})}]}})},
-                                                    {'ranParameter-ID': 10, 'ranParameter-valueType': ('ranP-Choice-ElementFalse', {'ranParameter-value': ('valueInt', min_prb_policy_ratio)})},
-                                                    {'ranParameter-ID': 11, 'ranParameter-valueType': ('ranP-Choice-ElementFalse', {'ranParameter-value': ('valueInt', max_prb_policy_ratio)})},
-                                                    {'ranParameter-ID': 12, 'ranParameter-valueType': ('ranP-Choice-ElementFalse', {'ranParameter-value': ('valueInt', dedicated_prb_policy_ratio)})}]}]}})}]})}
+                                        #>RRM Policy Ratio Group, STRUCTURE
+                                        {'ranParameter-ID': 2, 'ranParameter-valueType': ('ranP-Choice-Structure', {'ranParameter-Structure': {'sequence-of-ranParameters': [
+                                            #>>RRM Policy, STRUCTURE
+                                            {'ranParameter-ID': 3, 'ranParameter-valueType': ('ranP-Choice-Structure', {'ranParameter-Structure': {'sequence-of-ranParameters': [
+                                                #Note that ID = 4 is missing in the spec.
+                                                #>>RRM Policy Member List, LIST
+                                                {'ranParameter-ID': 5, 'ranParameter-valueType': ('ranP-Choice-List', {'ranParameter-List': {'list-of-ranParameter': [{'sequence-of-ranParameters': [
+                                                    #>>>>RRM Policy Member, STRUCTURE
+                                                    {'ranParameter-ID': 6, 'ranParameter-valueType': ('ranP-Choice-Structure', {'ranParameter-Structure': {'sequence-of-ranParameters': [
+                                                        #>>>>>PLMN Identity, ELEMENT
+                                                        {'ranParameter-ID': 7, 'ranParameter-valueType': ('ranP-Choice-ElementFalse', {'ranParameter-value': ('valueOctS', PLMN)})},
+                                                        #>>>>>S-NSSAI, STRUCTURE
+                                                        {'ranParameter-ID': 8, 'ranParameter-valueType': ('ranP-Choice-Structure', {'ranParameter-Structure': {'sequence-of-ranParameters': [
+                                                                #>>>>>>SST, ELEMENT
+                                                                {'ranParameter-ID': 9, 'ranParameter-valueType': ('ranP-Choice-ElementFalse', {'ranParameter-value': ('valueOctS', sst)})},
+                                                                #>>>>>>SD, ELEMENT
+                                                                {'ranParameter-ID': 10, 'ranParameter-valueType': ('ranP-Choice-ElementFalse', {'ranParameter-value': ('valueOctS', sd)})}]
+                                                            }})}]}})}]}]}})}]}})},
+                                            #>>Min PRB Policy Ratio, ELEMENT
+                                            {'ranParameter-ID': 11, 'ranParameter-valueType': ('ranP-Choice-ElementFalse', {'ranParameter-value': ('valueInt', min_prb_policy_ratio)})},
+                                            #>>Max PRB Policy Ratio, ELEMENT
+                                            {'ranParameter-ID': 12, 'ranParameter-valueType': ('ranP-Choice-ElementFalse', {'ranParameter-value': ('valueInt', max_prb_policy_ratio)})},
+                                            #>>Dedicated PRB Policy Ratio, ELEMENT
+                                            {'ranParameter-ID': 13, 'ranParameter-valueType': ('ranP-Choice-ElementFalse', {'ranParameter-value': ('valueInt', dedicated_prb_policy_ratio)})}
+                                        ]}})}
+                                    ]}]}})}
+                                ]}
+                            )}
 
         control_msg = self.e2sm_rc_compiler.pack_ric_control_msg(control_msg_dict)
         payload = self._build_ric_control_request(control_header, control_msg, ack_request)
