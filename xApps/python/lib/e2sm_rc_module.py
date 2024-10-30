@@ -1,7 +1,7 @@
 import datetime
 from enum import Enum
 from .asn1.e2sm_rc_packer import e2sm_rc_packer
-
+from .utils import plmn_string_to_bcd, plmn_to_bytes
 
 class e2sm_rc_module(object):
     def __init__(self, parent):
@@ -39,14 +39,25 @@ class e2sm_rc_module(object):
         return payload
 
     def send_control_request_style_2_action_6(self, e2_node_id, ue_id, min_prb_ratio, max_prb_ratio, dedicated_prb_ratio, ack_request=1):
-        PLMN = b'00101' # currently not exposed as parameter
-        # S-NSSAI
-        sst = b'1'  # currently not exposed as parameter
-        sd = b'0'   # currently not exposed as parameter
-        # ratios
-        min_prb_policy_ratio = max(0, min(min_prb_ratio, 100))
-        max_prb_policy_ratio = max(0, min(max_prb_ratio, 100))
-        dedicated_prb_policy_ratio = max(0, min(dedicated_prb_ratio, 100))
+        plmn_string = "00101"
+        sst = 1
+        sd = 1
+
+        # PLMN encoding
+        PLMN = plmn_string_to_bcd(plmn_string)
+        PLMN = plmn_to_bytes(PLMN)
+        # S-NSSAI encoding
+        sst = sst.to_bytes(1, byteorder='big')
+        sd = sd.to_bytes(3, byteorder='big')
+
+        # PRB ratio limits, i.e., [0-100]
+        min_prb_ratio = max(0, min(min_prb_ratio, 100))
+        max_prb_ratio = max(0, min(max_prb_ratio, 100))
+        dedicated_prb_ratio = max(0, min(dedicated_prb_ratio, 100))
+
+        if (max_prb_ratio < min_prb_ratio):
+            print("ERROR: E2SM-RC Control Request - Slice Level PRB Quota: max_prb_ratio ({}) cannot be smaller than min_prb_ratio ({})".format(max_prb_ratio, min_prb_ratio))
+            return
 
         ue_id = ('gNB-DU-UEID', {'gNB-CU-UE-F1AP-ID': ue_id})
         control_header = self.e2sm_rc_compiler.pack_ric_control_header_f1(style_type=2, control_action_id=6, ue_id_tuple=ue_id)
@@ -74,11 +85,11 @@ class e2sm_rc_module(object):
                                                                 {'ranParameter-ID': 10, 'ranParameter-valueType': ('ranP-Choice-ElementFalse', {'ranParameter-value': ('valueOctS', sd)})}]
                                                             }})}]}})}]}]}})}]}})},
                                             #>>Min PRB Policy Ratio, ELEMENT
-                                            {'ranParameter-ID': 11, 'ranParameter-valueType': ('ranP-Choice-ElementFalse', {'ranParameter-value': ('valueInt', min_prb_policy_ratio)})},
+                                            {'ranParameter-ID': 11, 'ranParameter-valueType': ('ranP-Choice-ElementFalse', {'ranParameter-value': ('valueInt', min_prb_ratio)})},
                                             #>>Max PRB Policy Ratio, ELEMENT
-                                            {'ranParameter-ID': 12, 'ranParameter-valueType': ('ranP-Choice-ElementFalse', {'ranParameter-value': ('valueInt', max_prb_policy_ratio)})},
+                                            {'ranParameter-ID': 12, 'ranParameter-valueType': ('ranP-Choice-ElementFalse', {'ranParameter-value': ('valueInt', max_prb_ratio)})},
                                             #>>Dedicated PRB Policy Ratio, ELEMENT
-                                            {'ranParameter-ID': 13, 'ranParameter-valueType': ('ranP-Choice-ElementFalse', {'ranParameter-value': ('valueInt', dedicated_prb_policy_ratio)})}
+                                            {'ranParameter-ID': 13, 'ranParameter-valueType': ('ranP-Choice-ElementFalse', {'ranParameter-value': ('valueInt', dedicated_prb_ratio)})}
                                         ]}})}
                                     ]}]}})}
                                 ]}
