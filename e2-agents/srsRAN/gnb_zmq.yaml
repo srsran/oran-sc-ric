@@ -41,6 +41,8 @@ cell_cfg:
     prach_config_index: 1           # Sets PRACH config to match what is expected by srsUE
   pdsch:
     mcs_table: qam64
+  pusch:
+    mcs_table: qam64
 
 log:
   filename: /tmp/gnb.log            # Path of the log file.
