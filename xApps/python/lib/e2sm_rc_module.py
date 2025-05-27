@@ -2,6 +2,7 @@ import datetime
 from enum import Enum
 from .asn1.e2sm_rc_packer import e2sm_rc_packer
 from .utils import plmn_string_to_bcd, plmn_to_bytes
+from .asn1.nr_cgi_packer import nr_cgi_packer
 
 class e2sm_rc_module(object):
     def __init__(self, parent):
@@ -39,131 +40,79 @@ class e2sm_rc_module(object):
         return payload
 
 
-    def send_control_request_style_3_action_1(self, e2_node_id, ue_id):
-        ue_id = ('gNB-DU-UEID', {'gNB-CU-UE-F1AP-ID': ue_id})
-        NR_CGI = b'0010101'
+    def send_control_request_style_3_action_1(self, e2_node_id, amf_ue_ngap_id, gnb_cu_ue_f1ap_id, plmn_string, target_nr_cell_id):
+        # NR CGI encoding = (PLMN Identity + NR Cell Identity)
+        packed_target_cgi = nr_cgi_packer.pack_nrcgi(plmn_string, target_nr_cell_id)
+
+        PLMN = plmn_string_to_bcd(plmn_string)
+        PLMN = plmn_to_bytes(PLMN)
+
+        ue_id = ('gNB-UEID', {
+            'amf-UE-NGAP-ID': amf_ue_ngap_id,
+            'guami': {
+                'pLMNIdentity': PLMN,
+                'aMFRegionID': (b'\x00', 8),  # dummy value
+                'aMFSetID':(b'\x00\x00', 10),  # dummy value
+                'aMFPointer': (b'\x00', 6)  # dummy value
+            },
+            'gNB-CU-UE-F1AP-ID-List': [{'gNB-CU-UE-F1AP-ID': gnb_cu_ue_f1ap_id}]
+        })
+
         control_header = self.e2sm_rc_compiler.pack_ric_control_header_f1(style_type=3, control_action_id=1, ue_id_tuple=ue_id)
         handover_msg_dict = {
-            'ric-controlMessage-formats': (
-                'controlMessage-Format1',
-                {'ranP-List': [
-                    {'ranParameter-ID': 1,
-                        'ranParameter-valueType': (
-                            'ranP-Choice-Structure', {
-                                'ranParameter-Structure': {
-                                    'sequence-of-ranParameters': [
-                                        {
-                                            'ranParameter-ID': 2,
-                                            'ranParameter-valueType': (
-                                                'ranP-Choice-Structure', {
-                                                    'ranParameter-Structure': {
-                                                        'sequence-of-ranParameters': [
-                                                            {
-                                                                'ranParameter-ID': 3,
-                                                                'ranParameter-valueType': (
-                                                                    'ranP-Choice-Structure', {
-                                                                        'ranParameter-Structure': {
-                                                                            'sequence-of-ranParameters': [
-                                                                                {
-                                                                                    'ranParameter-ID': 4,
-                                                                                    'ranParameter-valueType': (
-                                                                                        'ranP-Choice-ElementFalse', {
-                                                                                            'ranParameter-value': (
-                                                                                                'valueOctS', NR_CGI
-                                                                                            )
-                                                                                        }
-                                                                                    )
-                                                                                }
-                                                                            ]
+            "ric-controlMessage-formats": (
+                "controlMessage-Format1",
+                {
+                    "ranP-List": [
+                        {
+                            "ranParameter-ID": 1,
+                            "ranParameter-valueType": (
+                                "ranP-Choice-Structure",
+                                {
+                                    "ranParameter-Structure": {
+                                        "sequence-of-ranParameters": [
+                                            {
+                                                "ranParameter-ID": 2,
+                                                "ranParameter-valueType": (
+                                                    "ranP-Choice-Structure",
+                                                    {
+                                                        "ranParameter-Structure": {
+                                                            "sequence-of-ranParameters": [
+                                                                {
+                                                                    "ranParameter-ID": 3,
+                                                                    "ranParameter-valueType": (
+                                                                        "ranP-Choice-Structure",
+                                                                        {
+                                                                            "ranParameter-Structure": {
+                                                                                "sequence-of-ranParameters": [
+                                                                                    {
+                                                                                        "ranParameter-ID": 4,
+                                                                                        "ranParameter-valueType": (
+                                                                                            "ranP-Choice-ElementFalse",
+                                                                                            {
+                                                                                                "ranParameter-value": 
+                                                                                                    ("valueOctS", packed_target_cgi)
+                                                                                            }
+                                                                                        )
+                                                                                    }
+                                                                                ]
+                                                                            }
                                                                         }
-                                                                    }
-                                                                )
-                                                            },
-                                                            {
-                                                                'ranParameter-ID': 7,
-                                                                'ranParameter-valueType': (
-                                                                    'ranP-Choice-List', {
-                                                                        'ranParameter-List': {
-                                                                            'list-of-ranParameter': [
-                                                                                {
-                                                                                    'sequence-of-ranParameters': [
-                                                                                        {
-                                                                                            'ranParameter-ID': 8,
-                                                                                            'ranParameter-valueType': (
-                                                                                                'ranP-Choice-Structure', {
-                                                                                                    'ranParameter-Structure': {
-                                                                                                        'sequence-of-ranParameters': [
-                                                                                                            {
-                                                                                                                'ranParameter-ID': 9,
-                                                                                                                'ranParameter-valueType': (
-                                                                                                                    'ranP-Choice-ElementTrue', {
-                                                                                                                        'ranParameter-value': (
-                                                                                                                            'valueInt', 1
-                                                                                                                        )
-                                                                                                                    }
-                                                                                                                )
-                                                                                                            }
-                                                                                                        ]
-                                                                                                    }
-                                                                                                }
-                                                                                            )
-                                                                                        }
-                                                                                    ]
-                                                                                }
-                                                                            ]
-                                                                        }
-                                                                    }
-                                                                )
-                                                            },
-                                                            {
-                                                                'ranParameter-ID': 13,
-                                                                'ranParameter-valueType': (
-                                                                    'ranP-Choice-List', {
-                                                                        'ranParameter-List': {
-                                                                            'list-of-ranParameter': [
-                                                                                {
-                                                                                    'sequence-of-ranParameters': [
-                                                                                        {
-                                                                                            'ranParameter-ID': 14,
-                                                                                            'ranParameter-valueType': (
-                                                                                                'ranP-Choice-Structure', {
-                                                                                                    'ranParameter-Structure': {
-                                                                                                        'sequence-of-ranParameters': [
-                                                                                                            {
-                                                                                                                'ranParameter-ID': 15,
-                                                                                                                'ranParameter-valueType': (
-                                                                                                                    'ranP-Choice-ElementTrue', {
-                                                                                                                        'ranParameter-value': (
-                                                                                                                            'valueInt', 2
-                                                                                                                        )
-                                                                                                                    }
-                                                                                                                )
-                                                                                                            }
-                                                                                                        ]
-                                                                                                    }
-                                                                                                }
-                                                                                            )
-                                                                                        }
-                                                                                    ]
-                                                                                }
-                                                                            ]
-                                                                        }
-                                                                    }
-                                                                )
-                                                            }
-                                                        ]
+                                                                    )
+                                                                }
+                                                            ]
+                                                        }
                                                     }
-                                                }
-                                            )
-                                        }
-                                    ]
+                                                )
+                                            }
+                                        ]
+                                    }
                                 }
-                            }
-                        )
-                    }
-                ]
-            }
-        )
+                            )
+                        }
+                    ]
+                }
+            )
         }
         control_msg = self.e2sm_rc_compiler.pack_ric_control_msg(handover_msg_dict)
         payload = self._build_ric_control_request(control_header, control_msg, 1)
