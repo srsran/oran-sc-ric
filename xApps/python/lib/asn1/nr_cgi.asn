@@ -1,0 +1,13 @@
+NRCGI-Module DEFINITIONS ::= BEGIN
+
+PLMN-Identity ::= OCTET STRING (SIZE(3))
+NRCellIdentity ::= BIT STRING (SIZE(36))
+
+NRCGI ::= SEQUENCE {
+  ext BOOLEAN,
+  pLMN-Identity PLMN-Identity,
+  nRCellIdentity NRCellIdentity,
+  ...
+}
+
+END
