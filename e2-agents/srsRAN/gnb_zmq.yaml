@@ -61,8 +61,8 @@ pcap:
 
 e2:
   enable_du_e2: true                # Enable DU E2 agent (one for each DU instance)
-  enable_cu_cp_e2: false            # Enables the CU E2 agent for CU-CP
-  enable_cu_up_e2: false            # Enables the CU E2 agent for CU-UP
+  enable_cu_cp_e2: true             # Enables the CU E2 agent for CU-CP
+  enable_cu_up_e2: true             # Enables the CU E2 agent for CU-UP
   e2sm_kpm_enabled: true            # Enable KPM service module
   e2sm_rc_enabled: true             # Enable RC service module
   addr: 10.0.2.10                   # RIC IP address
@@ -70,4 +70,19 @@ e2:
   port: 36421                       # RIC port
 
 metrics:
-  rlc_report_period: 1000           # Set reporting period to 1s
+  autostart_stdout_metrics: false
+  enable_log: false
+  enable_json: false
+
+  periodicity:
+    du_report_period: 1000
+    cu_up_report_period: 1000
+    cu_cp_report_period: 1000
+
+  layers:
+    enable_ru: false
+    enable_sched: true
+    enable_rlc: true
+    enable_mac: true
+    enable_pdcp: false
+    enable_du_low: false
