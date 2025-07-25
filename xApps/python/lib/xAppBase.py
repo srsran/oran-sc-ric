@@ -9,6 +9,7 @@ from ricxappframe.xapp_frame import rmr
 import ricxappframe.xapp_subscribe as subscribe
 import ricxappframe.xapp_rest as ricrest
 from ricxappframe.e2ap.asn1 import IndicationMsg
+from .e2sm_ccc_module import e2sm_ccc_module
 from .e2sm_kpm_module import e2sm_types, e2sm_kpm_module
 from .e2sm_rc_module import e2sm_rc_module
 
@@ -36,6 +37,7 @@ class xAppBase(object):
             # TODO: read config
             pass
 
+        self.e2sm_ccc = e2sm_ccc_module(self)
         self.e2sm_kpm = e2sm_kpm_module(self)
         self.e2sm_rc = e2sm_rc_module(self)
         # dict to store active subscriptions

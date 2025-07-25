@@ -60,6 +60,8 @@ The [simple_rc_xapp](xApps/python/simple_rc_xapp.py) is a basic example designed
 
 The [simple_rc_ho_xapp](xApps/python/simple_rc_ho_xapp.py) demonstrates how to trigger a handover for a specific UE to a target cell. It uses the E2SM-RC control module to send handover commands.
 
+The [simple_ccc_xapp](xApps/python/simple_ccc_xapp.py) is a basic example designed to illustrate the usage of the E2SM-CCC control.
+
 The [simple_xapp](xApps/python/simple_xapp.py) demonstrates how to use both E2SM-KPM monitoring and E2SM-RC control modules together.
 
 Additionally, we provide a handy [library](xApps/python/lib/) designed to streamline xApp development. This library focuses on separating reusable code, such as communication protocols and message encoding/decoding, resulting in significantly simplified xApp implementations.
@@ -168,7 +170,6 @@ The example RC xApp periodically (every 5s) adjusts the number of DL PRBs availa
 Enabling gNB console trace (with `t`) allows the monitoring of changes in the downlink (DL) user equipment (UE) data rate.
 
 
-
 **Note 5:** To trigger a handover with [simple_rc_ho_xapp](xApps/python/simple_rc_ho_xapp.py), use the following command:
 
 ```bash
@@ -183,6 +184,10 @@ docker compose exec python_xapp_runner ./simple_rc_ho_xapp.py --e2_node_id gnb_0
 
 Note that everytime UE connects to the network it gets assigned a new AMF UE NGAP ID.
 
+**Note 6:** To start an example **E2SM_CCC** [simple_ccc_xapp](xApps/python/simple_ccc_xapp.py) xApp, which sends a RIC Control Request with O-RRMPolicyRatio config structure, please run the following command from the `oran-sc-ric` directory (use CTRL+C to exit):
+```bash
+docker compose exec python_xapp_runner ./simple_ccc_xapp.py
+```
 
 ## xApp Development
 
