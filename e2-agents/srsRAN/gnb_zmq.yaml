@@ -3,6 +3,12 @@
 # To run the srsRAN Project gNB with this config, use the following command: 
 #   sudo ./gnb -c gnb_zmq.yaml
 
+ran_node_name: cu_cp_01             # Sets the text ID associated with the gNB. Format: string without spaces.
+gnb_id: 411                         # Sets the numerical ID associated with the gNB.
+gnb_id_bit_length: 22               # Sets the bit length of the gnb_id above. Format: integer between [22 - 32]
+gnb_cu_up_id: 0                     # Sets the gNB CU-UP ID.
+gnb_du_id: 0                        # Sets the gNB DU ID.
+
 cu_cp:
   amf:
     addr: 10.53.1.2                 # The address or hostname of the AMF.
@@ -30,6 +36,12 @@ cell_cfg:
   common_scs: 15                    # Subcarrier spacing in kHz used for data.
   plmn: "00101"                     # PLMN broadcasted by the gNB.
   tac: 7                            # Tracking area code (needs to match the core configuration).
+  slicing:                          # Optional TEXT. Configure network slicing options. This can only be set via the configuration file.
+  -                                 # Configure Slice 1
+    sst: 1                          # Optional UINT (1). Sets the Slice Service Type. Supported: [0 - 255].
+    sched_cfg:                      # Scheduler configuration for the slice
+      min_prb_policy_ratio: 0       # Optional UINT (0). Sets the minimum percentage of PRBs to be allocated to the slice. Supported [0 - 100].
+      max_prb_policy_ratio: 100     # Optional UINT (100). Sets the maximum percentage of PRBs to be allocated to the slice. Supported [1 - 100].
   pdcch:
     common:
       ss0_index: 0                  # Set search space zero index to match srsUE capabilities
