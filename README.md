@@ -38,6 +38,7 @@ The SC RIC application contains the following services:
 - `rtmgr_sim` &rarr; Routing Manager Simulator used to mimic the real Routing Manager [[docs](https://docs.o-ran-sc.org/projects/o-ran-sc-ric-plt-rtmgr/en/latest/), [sim code](https://github.com/o-ran-sc/ric-plt-e2mgr/tree/i-release/tools/RoutingManagerSimulator), [code](https://github.com/o-ran-sc/ric-plt-rtmgr)]
 - `submgr` &rarr; Subscription Manager responsible for managing E2 subscriptions from xApps to the E2 Node [[docs](https://docs.o-ran-sc.org/projects/o-ran-sc-ric-plt-submgr/en/latest/user-guide.html), [code](https://github.com/o-ran-sc/ric-plt-submgr)]
 - `appmgr`  &rarr;  Application Manager responsible for deploying and managing RIC xApps [[docs](https://docs.o-ran-sc.org/projects/o-ran-sc-ric-plt-appmgr/en/latest/), [code](https://github.com/o-ran-sc/ric-plt-appmgr)]
+- `a1mediator` &rarr;  Exposes the northbound REST API for policy types and policy instances, and forwards policy instance operations to xApps over RMR (southbound) [[docs](https://docs.o-ran-sc.org/projects/o-ran-sc-ric-plt-a1/en/latest/), [code](https://gerrit.o-ran-sc.org/r/admin/repos/ric-plt/a1)]
 - `python_xapp_runner`  &rarr; a container with xApp Python Framework to facilitate the development and running of xApps [[docs](https://docs.o-ran-sc.org/projects/o-ran-sc-ric-plt-xapp-frame-py/en/latest/), [code](https://github.com/o-ran-sc/ric-plt-xapp-frame-py)]
 
 Each RIC entity is connected to [RIC Message Router](https://docs.o-ran-sc.org/projects/o-ran-sc-ric-plt-lib-rmr/en/latest/user-guide.html) (RMR), which acts as a peer-to-peer communication platform between entities. Therefore, each entity maintains a [routing table](https://docs.o-ran-sc.org/projects/o-ran-sc-ric-plt-lib-rmr/en/latest/rt_tables.html) where the routes are selected based on E2 message type.
@@ -63,6 +64,9 @@ The [simple_rc_ho_xapp](xApps/python/simple_rc_ho_xapp.py) demonstrates how to t
 The [simple_ccc_xapp](xApps/python/simple_ccc_xapp.py) is a basic example designed to illustrate the usage of the E2SM-CCC control.
 
 The [simple_xapp](xApps/python/simple_xapp.py) demonstrates how to use both E2SM-KPM monitoring and E2SM-RC control modules together.
+
+The [simple_A1_ccc_xapp](xApps/python/simple_A1_ccc_xapp.py) is the same Xapp [simple_ccc_xapp](xApps/python/simple_ccc_xapp.py), but triggered for A1 based policies. You should register a Policy Type previously to trigger a Policy Instance as stated on [docs](https://docs.o-ran-sc.org/projects/o-ran-sc-ric-plt-a1/en/latest/user-guide-api.html)
+
 
 Additionally, we provide a handy [library](xApps/python/lib/) designed to streamline xApp development. This library focuses on separating reusable code, such as communication protocols and message encoding/decoding, resulting in significantly simplified xApp implementations.
 

@@ -1,0 +1,10 @@
+a1mediator:
+  http:
+    port: 10000
+    base_path: /A1-P/v2
+  rmr_timeout_config:
+    a1_rcv_retry_times: 20
+    ins_del_no_resp_ttl: 5
+    ins_del_resp_ttl: 10
+  logging:
+    level: info

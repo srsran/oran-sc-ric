@@ -121,6 +121,37 @@ services:
       ric_network:
         ipv4_address: ${APPMGR_IP:-10.0.2.14}
 
+  a1mediator:
+    container_name: ric_a1mediator
+    hostname: a1mediator
+    image: nexus3.o-ran-sc.org:10002/o-ran-sc/ric-plt-a1:${A1MEDIATOR_VER}
+    depends_on:
+      - appmgr
+      - e2mgr
+    env_file:
+      - .env
+    environment:
+      - CONTAINER_NAME=ric_${A1MEDIATOR_NAME}
+      - HOST_NAME=ric_${A1MEDIATOR_NAME}_host
+      - POD_NAME=${A1MEDIATOR_NAME}_pod
+      - SERVICE_NAME=ric_${A1MEDIATOR_NAME}_service
+      - RMR_SEED_RT=/opt/ric/config/uta-rtg.rt
+      - RMR_SRC_ID=${A1MEDIATOR_IP}
+      - A1MEDIATOR_CFG=/opt/a1mediator/config/a1mediator.yaml
+      - CFG_FILE=/opt/a1mediator/config/a1mediator.yaml
+    volumes:
+      - type: bind
+        source: ./ric/configs/routes.rtg
+        target: /opt/ric/config/uta-rtg.rt
+      - type: bind
+        source: ./ric/configs/a1mediator.yaml
+        target: /opt/a1mediator/config/a1mediator.yaml
+    ports:
+      - "${A1MEDIATOR_HTTP_PORT:-10000}:10000"
+    networks:
+      ric_network:
+        ipv4_address: ${A1MEDIATOR_IP:-10.0.2.16}
+        
   e2mgr:
     container_name: ric_e2mgr
     hostname: e2mgr
