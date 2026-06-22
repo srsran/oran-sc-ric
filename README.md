@@ -126,10 +126,12 @@ To start the provided example [xApp](xApps/python/simple_mon_xapp.py), please ru
 docker compose exec python_xapp_runner ./simple_mon_xapp.py --metrics=DRB.UEThpDl,DRB.UEThpUl
 ```
 
+**Note:** Example xApps default to `--e2_node_id gnbd_001_001_00019b_0`. Use the E2 node ID reported by your gNB/E2 agent if it differs (see [#26](https://github.com/srsran/oran-sc-ric/issues/26)).
+
 The xApp should subscribe to `DRB.UEThpUl` and `DRB.UEThpUl` measurements, and display the content of received `RIC_INDICATION` messages. The console output should be similar to:
 
 ```console
-RIC Indication Received from gnb_001_001_0000019b for Subscription ID: 65
+RIC Indication Received from gnbd_001_001_00019b_0 for Subscription ID: 65
 E2SM_KPM RIC Indication Content:
 -ColletStartTime:  2024-01-26 00:08:05
 -Measurements Data:
@@ -160,10 +162,10 @@ docker compose exec python_xapp_runner ./simple_rc_xapp.py
 The example RC xApp periodically (every 5s) adjusts the number of DL PRBs available for allocation to a UE. Its console output should be similar to:
 
 ```console
-11:34:29 Send RIC Control Request to E2 node ID: gnb_001_001_00019b for UE ID: 0, PRB_min: 1, PRB_max: 5
-11:34:34 Send RIC Control Request to E2 node ID: gnb_001_001_00019b for UE ID: 0, PRB_min: 1, PRB_max: 275
-11:34:39 Send RIC Control Request to E2 node ID: gnb_001_001_00019b for UE ID: 0, PRB_min: 1, PRB_max: 5
-11:34:44 Send RIC Control Request to E2 node ID: gnb_001_001_00019b for UE ID: 0, PRB_min: 1, PRB_max: 275
+11:34:29 Send RIC Control Request to E2 node ID: gnbd_001_001_00019b_0 for UE ID: 0, PRB_min: 1, PRB_max: 5
+11:34:34 Send RIC Control Request to E2 node ID: gnbd_001_001_00019b_0 for UE ID: 0, PRB_min: 1, PRB_max: 275
+11:34:39 Send RIC Control Request to E2 node ID: gnbd_001_001_00019b_0 for UE ID: 0, PRB_min: 1, PRB_max: 5
+11:34:44 Send RIC Control Request to E2 node ID: gnbd_001_001_00019b_0 for UE ID: 0, PRB_min: 1, PRB_max: 275
 ...
 ```
 
@@ -173,13 +175,13 @@ Enabling gNB console trace (with `t`) allows the monitoring of changes in the do
 **Note 5:** To trigger a handover with [simple_rc_ho_xapp](xApps/python/simple_rc_ho_xapp.py), use the following command:
 
 ```bash
-docker compose exec python_xapp_runner ./simple_rc_ho_xapp.py --e2_node_id gnb_001_001_0000019b --plmn 00101 --amf_ue_ngap_id 1 --target_nr_cell_id 0x19b1
+docker compose exec python_xapp_runner ./simple_rc_ho_xapp.py --e2_node_id gnbd_001_001_00019b_0 --plmn 00101 --amf_ue_ngap_id 1 --target_nr_cell_id 0x19b1
 ```
 
 To trigger another handover:
 
 ```bash
-docker compose exec python_xapp_runner ./simple_rc_ho_xapp.py --e2_node_id gnb_001_001_0000019b --plmn 00101 --amf_ue_ngap_id 1 --target_nr_cell_id 0x19b0
+docker compose exec python_xapp_runner ./simple_rc_ho_xapp.py --e2_node_id gnbd_001_001_00019b_0 --plmn 00101 --amf_ue_ngap_id 1 --target_nr_cell_id 0x19b0
 ```
 
 Note that everytime UE connects to the network it gets assigned a new AMF UE NGAP ID.
